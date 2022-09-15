@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Criando uma tabela dentro do SQlite
+model Game {
+  // dados da tabela 
+  id        String @id @default(uuid())
+  title     String
+  bannerUrl String
+
+  // Um game pertence a varios
+  ads Ad[]
+}
+
+// Criando uma tabela dentro do SQlite
+model Ad {
+  // dados da tabela 
+  id              String   @id @default(uuid())
+  gameId          String
+  name            String
+  yearsPlaying    Int
+  discord         String
+  weekDays        String
+  hourStart       Int
+  hourEnd         Int
+  useVoiceChannel Boolean
+  createdAt       DateTime @default(now())
+
+  // relacionamento da tabela
+  // um ad pertence a um game
+  game Game @relation(fields: [gameId], references: [id])
+}
